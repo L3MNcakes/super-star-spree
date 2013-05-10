@@ -1,6 +1,15 @@
 MainMenu = BaseEntity.extend({
     defaults : {
-        'options' : ["Start", "Map Editor"],
+        'options' : [
+            {
+                "label" : "Start", 
+                "scene" : "main"        
+            },
+            {
+                "label" : "Map Editor",
+                "scene" : "main"
+            }
+        ],
         'color' : '#000066'
     },
     

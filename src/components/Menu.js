@@ -44,6 +44,8 @@ Crafty.c("Menu", {
                 }
 
                 this.draw();
+            } else if(e.key == Crafty.keys["ENTER"]) {
+                Crafty.scene(this._selec.scene);
             }
 
         });
@@ -76,7 +78,7 @@ Crafty.c("Menu", {
                         w : this.w,
                         h : this.h
                     })
-                    .text(this._opts[i])
+                    .text(this._opts[i].label)
                     .textColor(t_col)
                     .textFont({"size" : "24px"})
                     .css({'font-size' : '10px'});
