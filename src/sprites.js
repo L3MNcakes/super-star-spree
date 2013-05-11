@@ -20,6 +20,16 @@ Sprites = Backbone.Model.extend({
                  'elements': {
                      'ufo' : [0, 0]
                  }
+            },
+            'mapedit' : {
+                'file' : 'web/images/mapedit_sprites.png',
+                'tile' : 64,
+                'tileh' : 64,
+                'elements' : {
+                    'mapedit_player' : [0,0],
+                    'mapedit_block' : [1,0],
+                    'mapedit_star' : [2, 0]
+                }
             }
         }
     },

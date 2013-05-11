@@ -23,10 +23,28 @@ Crafty.c("Grid", {
                 py = ty + (this._w / 4);
 
                 block_tile = Crafty.e("MapEdit_Tile")
-                    .Tile(tx,ty,this._w).attr({z : 9});
+                    .type("block")
+                    .attr({
+                        x : tx,
+                        y : ty,
+                        w : this._w,
+                        h : this._w,
+                        z : 5
+                    })
+                    .setAlpha()
+                    .activate();
 
-                person_tile = Crafty.e("MapEdit_Person")
-                    .Person(px,py,this._w).attr({z : 0});
+                person_tile = Crafty.e("MapEdit_Tile")
+                    .type("player")
+                    .attr({
+                        x : px,
+                        y : py,
+                        w : this._w,
+                        h : this._w,
+                        z : 0
+                    })
+                    .setAlpha();
+                // person_tile = Crafty.e("MapEdit_Person");
 
                 this._block_tiles.push(block_tile);
                 this._person_tiles.push(person_tile);
