@@ -59,6 +59,7 @@ window.onload = function() {
 		// declare all scenes
 		var scenes = [
 			"src/scenes/main.js?v="+version+"",
+            "src/scenes/MapEdit.js?v="+version+"",
 		];
 		
 		require(scenes, function(){});
