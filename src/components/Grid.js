@@ -20,13 +20,13 @@ Crafty.c("Grid", {
                 tx = j * this._w;
                 ty = i * this._w;
                 px = tx;
-                py = ty + (this._w / 2);
+                py = ty + (this._w / 4);
 
                 block_tile = Crafty.e("MapEdit_Tile")
-                    .Tile(tx,ty,this._w);
+                    .Tile(tx,ty,this._w).attr({z : 9});
 
                 person_tile = Crafty.e("MapEdit_Person")
-                    .Person(px,py,this._w);
+                    .Person(px,py,this._w).attr({z : 0});
 
                 this._block_tiles.push(block_tile);
                 this._person_tiles.push(person_tile);
@@ -41,6 +41,16 @@ Crafty.c("Grid", {
                 Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
             }
         });
+
+        /**
+        this.bind("MapEditPerson_StateSet", function(e) {
+            for(t in this._person_tiles) {
+                if(e.tile != this._person_tiles[t]) {
+                    this._person_tiles[t].destroyImage();
+                } 
+            }
+        });
+        **/
 
         this.attr({
             x : 0,

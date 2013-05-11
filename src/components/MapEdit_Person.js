@@ -1,5 +1,6 @@
 Crafty.c("MapEdit_Person", {
     _state : "empty",
+    _image : null,
 
     init : function() {
         this.addComponent("2D, Canvas, Mouse");
@@ -10,6 +11,7 @@ Crafty.c("MapEdit_Person", {
         this.y = y;
         this.w = w;
         this.h = w;
+        this.z = 0;
 
         var entity = this;
 
@@ -18,9 +20,25 @@ Crafty.c("MapEdit_Person", {
             else this._deactivate();
         });
 
+        return this;
+
+    },
+
+    getImage : function() {
+        return this._image;
+    },
+
+    destroyImage : function() {
+        if(this._image !== null) {
+            this._image.destroy();
+            this._state = "empty";
+        }
     },
 
     _activate : function() { 
+        this.z = 9;
+        this.attr({z : 9});
+
         var entity = this;
         
         entity.bind("MouseOver", function() {
@@ -30,14 +48,15 @@ Crafty.c("MapEdit_Person", {
                         x : this.x,
                         y : this.y,
                         w : this.w,
-                        h : this.h
+                        h : this.h,
+                        z : this.z
                     })
                     .image("web/images/p1.png");
             }
         });
 
         entity.bind("MouseOut", function() {
-            if(this._state == "empty") {
+            if(this._state == "empty" && this._image !== null) {
                 this._image.destroy();
             }
         });
@@ -45,37 +64,33 @@ Crafty.c("MapEdit_Person", {
         entity.bind("MouseDown", function(e) {
             if(e.mouseButton == Crafty.mouseButtons.LEFT) {
                 if(this._state == "set") {
-                    this._state == "empty";
+                    this._state = "empty";
                 } else if (this._state == "empty") {
-                    Crafty.trigger("MapEditPerson_StateSet");
-                    this._image = Crafty.e("2D,Canvas,Image")
-                        .attr({
-                            x : this.x,
-                            y : this.y,
-                            w : this.w,
-                            h : this.h
-                        })
-                        .image("web/images/p1.png");
-
                     this._state = "set";
+                    Crafty.trigger("MapEditPerson_StateSet", {'tile' : this});
                 }
             }
         });
 
-        entity.bind("MapEditPerson_StateSet", function() {
-            if(this._state == "set") {
-                this._image.destroy();
-                this._state == "empty";
+        entity.bind("MapEditPerson_StateSet", function(e) {
+            if(this != e.tile && this._image !== null) {
+                this.destroyImage();
             }
         });
     },
 
     _deactivate : function() {
+        this.z = 0;
+        this.attr({z : 0});
+        
+        if(this._state == "empty" && this._image !== null) {
+            this.destroyImage();
+        }
+
         var entity = this;
 
         entity.unbind("MouseOver");
         entity.unbind("MouseOut");
         entity.unbind("MouseDown");
-        entity.unbind("MapEditPerson_StateSet");
     }
 });
