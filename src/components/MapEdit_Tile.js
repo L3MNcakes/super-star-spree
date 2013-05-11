@@ -11,6 +11,19 @@ Crafty.c("MapEdit_Tile", {
         this.w = w;
         this.h = w;
 
+        this._activate();
+
+        var entity = this;
+
+        entity.bind("Grid_ModeChange", function(e) {
+            if(e.mode == "block") this._activate();
+            else this._deactivate();
+        });
+
+        return this;
+    },
+
+    _activate : function() {
         var entity = this;
 
         entity.bind("MouseOver", function() {
@@ -38,7 +51,13 @@ Crafty.c("MapEdit_Tile", {
                 else if(this._state == "empty") this._state = "set";
             }
         });
+    },
 
-        return this;
+    _deactivate : function() {
+        var entity = this;
+
+        entity.unbind("MouseOver");
+        entity.unbind("MouseOut");
+        entity.unbind("MouseDown");
     }
 });
