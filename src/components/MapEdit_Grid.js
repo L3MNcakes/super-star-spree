@@ -52,5 +52,26 @@ Crafty.c("MapEdit_Grid", {
         }
 
         return this;
+    },
+
+    map_to_json : function() {
+        obj = {
+            'rows' : this._r,
+            'cols' : this._c,
+            'tile_width' : this._tw,
+            'map' : ''
+        }
+
+        for(t in this._tiles) {
+            if(this._tiles[t].isSpriteActive("block")) {
+                obj.map = obj.map + "B";
+            } else if (this._tiles[t].isSpriteActive("player")) {
+                obj.map = obj.map + "P";
+            } else if (this._tiles[t].isSpriteActive("star")) {
+                obj.map = obj.map + "S";
+            }
+        }
+
+        return obj;
     }
 });

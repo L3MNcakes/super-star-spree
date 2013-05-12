@@ -6,7 +6,7 @@ Crafty.scene("main", function() {
         "src/interfaces/Title.js",
         "src/interfaces/MainMenu.js",
         "src/components/Rectangle.js",
-        "src/components/Menu.js"
+        "src/components/BaseMenu.js"
 	];
 	
 	//when everything is loaded, run the main scene
