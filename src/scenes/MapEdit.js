@@ -4,8 +4,7 @@ Crafty.scene("MapEdit", function() {
 
     var elements = [
         "src/components/Grid.js",
-        "src/components/MapEdit_Tile.js",
-        "src/components/MapEdit_Person.js"
+        "src/components/MapEdit_BaseTile.js",
     ];
 
     require(elements, function() {

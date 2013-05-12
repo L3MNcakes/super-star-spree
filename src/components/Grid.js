@@ -22,6 +22,15 @@ Crafty.c("Grid", {
                 px = tx;
                 py = ty + (this._w / 4);
 
+                Crafty.e("MapEdit_BaseTile")
+                    .attr({
+                        x : tx,
+                        y : ty,
+                        w : this._w,
+                        h : this._w
+                    });
+
+                /**
                 block_tile = Crafty.e("MapEdit_Tile")
                     .type("block")
                     .attr({
@@ -43,18 +52,27 @@ Crafty.c("Grid", {
                         h : this._w,
                         z : 0
                     })
-                    .setAlpha();
+                    .setAlpha()
+                    .single(true);
                 // person_tile = Crafty.e("MapEdit_Person");
 
                 this._block_tiles.push(block_tile);
                 this._person_tiles.push(person_tile);
+                **/
             }
         }
 
         this.bind("KeyDown", function(e) {
             if(e.key == Crafty.keys["P"]) {
-                if(this._mode == "block") this._mode = "person";
-                else if (this._mode == "person") this._mode = "block";
+                if(this._mode == "block") this._mode = "player";
+                else if (this._mode == "star") this._mode = "player";
+                else if (this._mode == "player") this._mode = "block";
+
+                Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+            } else if(e.key == Crafty.keys["S"]) {
+                if(this._mode == "block") this._mode = "star";
+                else if (this._mode == "player") this._mode = "star";
+                else if (this._mode == "star") this._mode = "block";
 
                 Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
             }
