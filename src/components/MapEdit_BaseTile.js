@@ -19,7 +19,7 @@ Crafty.c("MapEdit_BaseTile", {
         'star' : {
             'sprite' : 'mapedit_star',
             'z' : 4,
-            'offset' : 0,
+            'offset' : 16,
             'single' : false 
         }
     },
@@ -65,10 +65,14 @@ Crafty.c("MapEdit_BaseTile", {
         entity.bind("Grid_ModeChange", function(e) {
             if(e.mode in this._elements) {
                 this._elem(e.mode);
+            }
 
-                for(elem in this._elements) {
-                    this._popSprite(elem,"hover");
-                }
+            for(elem in this._elements) {
+                this._popSprite(elem,"hover");
+            }
+
+            if(e.mode == "empty") {
+                this._plop_element = "empty";
             }
         });
 

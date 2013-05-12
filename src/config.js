@@ -2,7 +2,8 @@ Config = Backbone.Model.extend({
     defaults: {
         'renderType' : 'Canvas',
         'game_title' : 'Super Star Spree',
-        'MapEdit_default_plop' : 'block'
+        'MapEdit_default_plop' : 'block',
+        'tile_width' : 64
     },
     initialize: function() {
        
