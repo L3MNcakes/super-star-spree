@@ -17,7 +17,6 @@ MainMenu = BaseEntity.extend({
         var model = this;
 
         var entity = Crafty.e("BaseMenu");
-        opts = model.get('options');
 
         entity
             .attr({

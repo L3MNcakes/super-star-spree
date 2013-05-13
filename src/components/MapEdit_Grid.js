@@ -10,6 +10,19 @@ Crafty.c("MapEdit_Grid", {
 
         this._tiles = [];
 
+        this.bind("MapEditMenu_Save", function() {
+            this._menu.remove();
+            this._menu = null;
+
+            this._mapSave = new MapEditSave();
+            this._mapSave.fill(this.map_to_json());
+        });
+
+        this.bind("MapEditSave_Close", function() {
+            this._mode = "block";
+            Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+        }),
+
         this.bind("KeyDown", function(e) {
             switch(e.key) {
                 case Crafty.keys["P"]:
@@ -67,7 +80,11 @@ Crafty.c("MapEdit_Grid", {
         return this;
     },
 
-    map_to_json : function() {
+    map_to_json : function(asString) {
+        if(asString === undefined) {
+            asString = true;
+        }
+
         obj = {
             'rows' : this._r,
             'cols' : this._c,
@@ -82,9 +99,11 @@ Crafty.c("MapEdit_Grid", {
                 obj.map = obj.map + "P";
             } else if (this._tiles[t].isSpriteActive("star")) {
                 obj.map = obj.map + "S";
+            } else {
+                obj.map = obj.map + "#";
             }
         }
 
-        return obj;
+        return asString ? JSON.stringify(obj) : obj;
     }
 });
