@@ -1,30 +1,20 @@
 Title = BaseEntity.extend({
     defaults : {
-        'text' : "Super Star Spree!"
+        'img' : "web/images/title.png"
     },
 
     initialize : function() {
         var model = this;
 
-        var entity = Crafty.e("2D,DOM,Text");
+        var entity = Crafty.e("2D,DOM,Image");
 
         entity
-            .text(model.get("text"))
-            .textColor("#FFFFFF")
-            .textFont({
-                'weight' : 'bold',
-                'family' : 'Arial Black, Arial, Helvetica, Sans-serif',
-                'size' : '72px',
-            })
-            .css({
-                'text-align' : 'center',
-                'text-shadow' : '0px 0px 10px #003'
-            })
             .attr({
-                x : Crafty.viewport.width / 2 - 100,
+                x : Crafty.viewport.width / 2 - 150,
                 y : Crafty.viewport.height / 3 - 300,
-                w : 200
-            });
+                w : 300
+            })
+            .image(model.get('img'));
 
         model.set({'entity' : entity});
     }

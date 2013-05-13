@@ -17,7 +17,7 @@ Crafty.c("BaseMenu", {
                 y : this.y,
                 w : this.w,
                 h : this.h,
-                z : 10
+                z : this.z || 10
             })
             .color(settings.color)
             .css({
@@ -29,6 +29,13 @@ Crafty.c("BaseMenu", {
         this._text_size = settings.size;
         this._text_family = settings.family;
         this._selected_color = settings.select_color;
+
+        this.bind("Remove", function() {
+            this._rect.destroy();
+            for(t in this._opts) {
+                this._opts[t].text.destroy();
+            }
+        });
 
         return this;
     },
@@ -49,22 +56,23 @@ Crafty.c("BaseMenu", {
                 'family' : this._text_family
             });
 
+        var select_color = this._selected_color;
+        var t_color = this._text_color;
+
+        t.bind("MouseOver", function() {
+            this
+                .textColor(select_color)
+                .css({
+                    'cursor' : 'pointer'
+                });
+        });
+
+        t.bind("MouseOut", function() {
+            this.textColor(t_color);
+        });
+
         switch(option.type) {
             case 'scene':
-                var select_color = this._selected_color;
-                var t_color = this._text_color;
-
-                t.bind("MouseOver", function() {
-                    this
-                        .textColor(select_color)
-                        .css({
-                            'cursor' : 'pointer'
-                        });
-                });
-
-                t.bind("MouseOut", function() {
-                    this.textColor(t_color);
-                });
 
                 t.bind("MouseDown", function(e) {
                     if(e.mouseButton == Crafty.mouseButtons.LEFT) {
@@ -74,6 +82,13 @@ Crafty.c("BaseMenu", {
 
                 break;
             case 'event':
+
+                t.bind("MouseDown", function(e) {
+                    if(e.mouseButton == Crafty.mouseButtons.LEFT) {
+                        Crafty.trigger(option.action);
+                    }
+                });
+
                 break;
         }
 

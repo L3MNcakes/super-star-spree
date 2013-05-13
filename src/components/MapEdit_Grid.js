@@ -3,6 +3,7 @@ Crafty.c("MapEdit_Grid", {
     _r : 0,
     _tw : gameContainer.conf.get("tile_width"),
     _mode : "empty",
+    _menu : null,
 
     init : function() {
         this.addComponent("2D, Canvas, Mouse, Keyboard");
@@ -26,6 +27,18 @@ Crafty.c("MapEdit_Grid", {
                 case Crafty.keys["ESC"]:
                     this._mode = "empty";
                     Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    break;
+                case Crafty.keys["M"]:
+                    if(this._menu !== null) {
+                        this._menu.remove();
+                        this._menu = null;
+                        this._mode = "block";
+                        Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    } else {
+                        this._menu = new MapEditMenu();
+                        this._mode = "empty";
+                        Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    }
                     break;
             }
         });

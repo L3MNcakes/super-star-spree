@@ -1,7 +1,7 @@
-MainMenu = BaseEntity.extend({
+MapEditMenu = BaseEntity.extend({
     defaults : {
-        'x' : (Crafty.viewport.width / 2) - 100,
-        'y' : (Crafty.viewport.height / 2) - 100,
+        'x' : Crafty.viewport.width - 225,
+        'y' : 25,
         'width' : 200,
         'height' : 80,
         'color' : '#000066',
@@ -10,21 +10,20 @@ MainMenu = BaseEntity.extend({
         'border' : '3px solid #FFFFFF',
         'border_radius' : '10px',
         'size' : 20,
-        'family' : 'Arial'
+        'family' : 'Arial',
+        'active' : false
     },
-    
+
     initialize : function() {
         var model = this;
 
-        var entity = Crafty.e("BaseMenu");
-        opts = model.get('options');
-
-        entity
+        var entity = Crafty.e("BaseMenu,MapEditMenu")
             .attr({
                 x : model.get('x'),
                 y : model.get('y'),
                 w : model.get('width'),
-                h : model.get('height')
+                h : model.get('height'),
+                z : 0
             })
             .menu({
                 'color' : model.get('color'),
@@ -36,14 +35,14 @@ MainMenu = BaseEntity.extend({
                 'family' : model.get('family')
             })
             .addOption({
-                'label' : 'Start',
-                'type' : 'scene',
-                'action' : 'main'
+                'label' : 'Save',
+                'type' : 'event',
+                'action' : 'MapEditMenu_Save'
             })
             .addOption({
-                'label' : 'Map Editor',
+                'label' : 'Quit',
                 'type' : 'scene',
-                'action' : 'MapEdit'
+                'action' : 'main'
             });
 
         model.set({'entity' : entity});

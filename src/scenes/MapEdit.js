@@ -5,6 +5,7 @@ Crafty.scene("MapEdit", function() {
     var elements = [
         "src/components/MapEdit_Grid.js",
         "src/components/MapEdit_BaseTile.js",
+        "src/interfaces/MapEditMenu.js"
     ];
 
     require(elements, function() {

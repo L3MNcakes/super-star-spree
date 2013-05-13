@@ -21,6 +21,8 @@ Crafty.c("MapEdit_BaseTile", {
             'z' : 4,
             'offset' : 16,
             'single' : false 
+        },
+        'empty' : {
         }
     },
 
@@ -70,10 +72,6 @@ Crafty.c("MapEdit_BaseTile", {
             for(elem in this._elements) {
                 this._popSprite(elem,"hover");
             }
-
-            if(e.mode == "empty") {
-                this._plop_element = "empty";
-            }
         });
 
         for(elem in this._elements) {
@@ -91,7 +89,7 @@ Crafty.c("MapEdit_BaseTile", {
         if(elem in this._elements) {
             this._plop_element = elem;
 
-            offset = this._elements[elem].offset;
+            offset = this._elements[elem].offset || 0;
 
             this.attr({
                 y : this.y + offset - this._offset
