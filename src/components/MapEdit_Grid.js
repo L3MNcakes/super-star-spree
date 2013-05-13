@@ -4,6 +4,11 @@ Crafty.c("MapEdit_Grid", {
     _tw : gameContainer.conf.get("tile_width"),
     _mode : "empty",
     _menu : null,
+    _maps : {
+        'first' : {
+            'file' : 'src/maps/first.js'
+        }
+    },
 
     init : function() {
         this.addComponent("2D, Canvas, Mouse, Keyboard");
@@ -19,6 +24,55 @@ Crafty.c("MapEdit_Grid", {
         });
 
         this.bind("MapEditSave_Close", function() {
+            this._mode = "block";
+            Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+        }),
+
+        this.bind("MapEditMenu_Load", function() {
+            this._menu.remove();
+            this._menu = null;
+
+            this._mapLoad = new MapEditLoad();
+            this._mapLoad.maps(this._maps);
+        }),
+
+        this.bind("MapEditLoad_Load", function(e) {
+            this._mapLoad.remove();
+            this._r = e.rows;
+            this._c = e.cols;
+
+            Crafty("MapEdit_BaseTile").destroy();
+
+            this._tiles = [];
+
+            for(i=0;i<this._r;i++) {
+                for(j=0;j<this._c;j++){
+                    tile = Crafty.e("MapEdit_BaseTile")
+                    .attr({
+                        x : j * this._tw,
+                        y : i * this._tw,
+                        w : this._tw,
+                        h : this._tw
+                    });
+
+                    ind = (this._r * i) + j;
+
+                    switch(e.map[ind]) {
+                        case 'B':
+                            tile.setActive('block');
+                            break;
+                        case 'P':
+                            tile.setActive('player');
+                            break;
+                        case 'S':
+                            tile.setActive('star');
+                            break;
+                    }
+
+                    this._tiles.push(tile);
+                }
+            }
+
             this._mode = "block";
             Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
         }),
@@ -71,7 +125,7 @@ Crafty.c("MapEdit_Grid", {
                         y : i * this._tw,
                         w : this._tw,
                         h : this._tw
-                    })
+                    });
 
                 this._tiles.push(tile);
             }

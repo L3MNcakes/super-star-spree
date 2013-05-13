@@ -1,8 +1,8 @@
-MapEditMenu = BaseEntity.extend({
+MapEditLoad = BaseEntity.extend({
     defaults : {
-        'x' : Crafty.viewport.width - 225,
-        'y' : 25,
-        'width' : 200,
+        'x' : Crafty.viewport.width / 2 - 200,
+        'y' : Crafty.viewport.height / 2 - 200,
+        'width' : 400,
         'height' : 0,
         'color' : '#000066',
         'text_color' : '#FFFFFF',
@@ -11,19 +11,20 @@ MapEditMenu = BaseEntity.extend({
         'border_radius' : '10px',
         'size' : 20,
         'family' : 'Arial',
-        'num_options' : 3
+        'num_options' : 0
     },
 
     initialize : function() {
         var model = this;
+        var entity = Crafty.e("BaseMenu");
 
-        var entity = Crafty.e("BaseMenu,MapEditMenu")
+        entity
             .attr({
                 x : model.get('x'),
                 y : model.get('y'),
                 w : model.get('width'),
                 h : model.get('num_options') * model.get('size') + (model.get('size') * 2),
-                z : 0
+                z : 10
             })
             .menu({
                 'color' : model.get('color'),
@@ -34,22 +35,32 @@ MapEditMenu = BaseEntity.extend({
                 'size' : model.get('size'),
                 'family' : model.get('family')
             })
-            .addOption({
-                'label' : 'Save',
-                'type' : 'event',
-                'action' : 'MapEditMenu_Save'
-            })
-            .addOption({
-                'label' : 'Load',
-                'type' : 'event',
-                'action' : 'MapEditMenu_Load'
-            })
-            .addOption({
-                'label' : 'Quit',
-                'type' : 'scene',
-                'action' : 'main'
-            });
 
-        model.set({'entity' : entity});
+        model.set({'entity' : entity}); 
+    },
+
+    maps : function(m) {
+        var entity = this.getEntity();
+        var model = this;
+
+        for(var map in m) {
+            var obj = m[map];
+            require([obj.file], function() {
+                entity.addOption({
+                    'label' : map,
+                    'type' : 'event',
+                    'action' : 'MapEditLoad_Load',
+                    'data' : eval(map)
+                });
+            });
+        }
+
+        entity.attr({
+            x : model.get('x'),
+            y : model.get('y'),
+            w : model.get('width'),
+            h : Object.keys(m).length * model.get('size') + (model.get('size') * 2),
+            z : 10
+        });
     }
 });

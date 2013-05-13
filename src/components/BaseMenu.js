@@ -30,6 +30,16 @@ Crafty.c("BaseMenu", {
         this._text_family = settings.family;
         this._selected_color = settings.select_color;
 
+        this.bind("Change", function() {
+            this._rect.attr({
+                x : this.x,
+                y : this.y,
+                w : this.w,
+                h : this.h,
+                z : this.z || 10
+            });
+        });
+
         this.bind("Remove", function() {
             this._rect.destroy();
             for(t in this._opts) {
@@ -85,7 +95,8 @@ Crafty.c("BaseMenu", {
 
                 t.bind("MouseDown", function(e) {
                     if(e.mouseButton == Crafty.mouseButtons.LEFT) {
-                        Crafty.trigger(option.action);
+                        data = option.data || {};
+                        Crafty.trigger(option.action, data);
                     }
                 });
 

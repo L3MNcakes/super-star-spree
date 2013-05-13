@@ -10,7 +10,8 @@ MainMenu = BaseEntity.extend({
         'border' : '3px solid #FFFFFF',
         'border_radius' : '10px',
         'size' : 20,
-        'family' : 'Arial'
+        'family' : 'Arial',
+        'num_options' : 2
     },
     
     initialize : function() {
@@ -23,7 +24,7 @@ MainMenu = BaseEntity.extend({
                 x : model.get('x'),
                 y : model.get('y'),
                 w : model.get('width'),
-                h : model.get('height')
+                h : model.get('num_options') * model.get('size') + (model.get('size') * 2)
             })
             .menu({
                 'color' : model.get('color'),

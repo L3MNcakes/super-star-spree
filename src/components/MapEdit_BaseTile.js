@@ -38,6 +38,15 @@ Crafty.c("MapEdit_BaseTile", {
 
         var entity = this;
 
+        entity.bind("Remove", function() {
+            for(elem in this._sprites) {
+                states = this._sprites[elem];
+                for(state in states) {
+                    this._sprites[elem][state].destroy();
+                }
+            }
+        });
+
         entity.bind("MouseOver", function() {
             if(!this.isSpriteActive(this._plop_element)) {
                 this._pushSprite(this._plop_element,0.5,"hover");
@@ -113,6 +122,11 @@ Crafty.c("MapEdit_BaseTile", {
         }
 
         return false;
+    },
+
+    setActive : function(elem) {
+        this._elem(elem);
+        this._pushSprite(elem,1,"active");
     },
 
     _pushSprite : function(elem,alpha,state) {
