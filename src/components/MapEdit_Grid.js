@@ -26,15 +26,17 @@ Crafty.c("MapEdit_Grid", {
         this.bind("MapEditSave_Close", function() {
             this._mode = "block";
             Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
-        }),
+        });
 
         this.bind("MapEditMenu_Load", function() {
-            this._menu.remove();
+            if(this._menu) {
+                this._menu.remove();
+            }
             this._menu = null;
 
             this._mapLoad = new MapEditLoad();
             this._mapLoad.maps(this._maps);
-        }),
+        });
 
         this.bind("MapEditLoad_Load", function(e) {
             this._mapLoad.remove();
@@ -75,7 +77,12 @@ Crafty.c("MapEdit_Grid", {
 
             this._mode = "block";
             Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
-        }),
+        });
+
+        this.bind("MapEditMenu_Test", function() {
+            gameContainer.map = this.map_to_json(false);
+            Crafty.scene('Game');
+        });
 
         this.bind("KeyDown", function(e) {
             switch(e.key) {
@@ -106,6 +113,12 @@ Crafty.c("MapEdit_Grid", {
                         this._mode = "empty";
                         Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
                     }
+                    break;
+                case Crafty.keys["L"]:
+                    Crafty.trigger("MapEditMenu_Load");
+                    break;
+                case Crafty.keys["T"]:
+                    Crafty.trigger("MapEditMenu_Test");
                     break;
             }
         });

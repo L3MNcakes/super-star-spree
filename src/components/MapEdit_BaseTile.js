@@ -5,19 +5,19 @@ Crafty.c("MapEdit_BaseTile", {
 
     _elements : {
         'block' : {
-            'sprite' : 'mapedit_block',
+            'sprite' : 'tile_block',
             'z' : 3,
             'offset' : 0,
             'single' : false
         },
         'player' : {
-            'sprite' : 'mapedit_player',
+            'sprite' : 'tile_player',
             'z' : 5,
             'offset' : 16,
             'single' : true
         },
         'star' : {
-            'sprite' : 'mapedit_star',
+            'sprite' : 'tile_star',
             'z' : 4,
             'offset' : 16,
             'single' : false 

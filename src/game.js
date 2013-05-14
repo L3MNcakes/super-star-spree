@@ -1,6 +1,6 @@
 window.onload = function() {
         
-    var version = null,
+    var version = "0.0.1",
     	today = new Date();
 	
 	// Fix for cache
@@ -60,6 +60,7 @@ window.onload = function() {
 		var scenes = [
 			"src/scenes/main.js?v="+version+"",
             "src/scenes/MapEdit.js?v="+version+"",
+            "src/scenes/Game.js?v="+version+""
 		];
 		
 		require(scenes, function(){});

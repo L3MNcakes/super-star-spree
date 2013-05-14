@@ -44,7 +44,7 @@ MainMenu = BaseEntity.extend({
                 'label' : 'Map Editor',
                 'type' : 'scene',
                 'action' : 'MapEdit'
-            });
+            })
 
         model.set({'entity' : entity});
     }

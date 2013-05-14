@@ -112,6 +112,8 @@ Crafty.c("BaseMenu", {
 
         this._opts.push(opt);
 
+        this.trigger("Change");
+
         return this;
     }
 
