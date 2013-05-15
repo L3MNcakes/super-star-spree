@@ -40,18 +40,18 @@ MapEditLoad = BaseEntity.extend({
     },
 
     maps : function(m) {
+        m = m || [];
         var entity = this.getEntity();
         var model = this;
 
         for(var map in m) {
             var obj = m[map];
-            require([obj.file], function() {
-                entity.addOption({
-                    'label' : map,
-                    'type' : 'event',
-                    'action' : 'MapEditLoad_Load',
-                    'data' : eval(map)
-                });
+
+            entity.addOption({
+                'label' : obj.label,
+                'type' : 'event',
+                'action' : 'MapEditLoad_Load',
+                'data' : obj.map
             });
         }
 
@@ -59,7 +59,7 @@ MapEditLoad = BaseEntity.extend({
             x : model.get('x'),
             y : model.get('y'),
             w : model.get('width'),
-            h : Object.keys(m).length * model.get('size') + (model.get('size') * 2),
+            h : m.length * model.get('size') + (model.get('size') * 2),
             z : 10
         });
     }

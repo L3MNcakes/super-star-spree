@@ -2,7 +2,7 @@ Crafty.c("MapEdit_Grid", {
     _c : 0,
     _r : 0,
     _tw : gameContainer.conf.get("tile_width"),
-    _mode : "empty",
+    _mode : "block",
     _menu : null,
     _maps : {
         'first' : {
@@ -19,11 +19,23 @@ Crafty.c("MapEdit_Grid", {
             this._menu.remove();
             this._menu = null;
 
-            this._mapSave = new MapEditSave();
-            this._mapSave.fill(this.map_to_json());
-        });
+            Crafty.storage.open("SuperStarSpree");
 
-        this.bind("MapEditSave_Close", function() {
+            var map_obj = this.map_to_json(false);
+
+            Crafty.storage.load("Maps","save",function(data) {
+                maps = data || [];
+
+                save_obj = {
+                    'label' : 'map_' + maps.length + 1,
+                    'map' : map_obj
+                };
+
+                maps.push(save_obj);
+
+                Crafty.storage.save("Maps","save",maps);
+            });
+
             this._mode = "block";
             Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
         });
@@ -34,8 +46,18 @@ Crafty.c("MapEdit_Grid", {
             }
             this._menu = null;
 
-            this._mapLoad = new MapEditLoad();
-            this._mapLoad.maps(this._maps);
+            var maps = null;
+            var entity= this;
+
+            Crafty.storage.open("SuperStarSpree");
+
+            Crafty.storage.load("Maps","save",function(data) {
+                maps = data;
+
+                entity._mapLoad = new MapEditLoad();
+                entity._mapLoad.maps(maps);
+            });
+
         });
 
         this.bind("MapEditLoad_Load", function(e) {
@@ -59,17 +81,7 @@ Crafty.c("MapEdit_Grid", {
 
                     ind = (this._r * i) + j;
 
-                    switch(e.map[ind]) {
-                        case 'B':
-                            tile.setActive('block');
-                            break;
-                        case 'P':
-                            tile.setActive('player');
-                            break;
-                        case 'S':
-                            tile.setActive('star');
-                            break;
-                    }
+                    tile.setActive(e.map[ind].s, e.map[ind].sp);
 
                     this._tiles.push(tile);
                 }
@@ -84,19 +96,42 @@ Crafty.c("MapEdit_Grid", {
             Crafty.scene('Game');
         });
 
+        this.bind("MapEditSpriteTile_Selected", function() {
+            this._menu.remove();
+            this._menu = null;
+            this._activate();
+        });
+
+        this._activate();
+
+        return this;
+    },
+
+    _activate : function() {
         this.bind("KeyDown", function(e) {
             switch(e.key) {
                 case Crafty.keys["P"]:
-                    this._mode = "player";
-                    Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    if(this._mode != "player") { 
+                        this._mode = "player";
+                        Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    } else {
+                        
+                    }
                     break;
                 case Crafty.keys["S"]:
                     this._mode = "star";
                     Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
                     break;
                 case Crafty.keys["B"]:
-                    this._mode = "block";
-                    Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    if(this._mode != "block") {
+                        this._mode = "block";
+                        Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
+                    } else {
+                        if(this._menu) this._menu.remove();
+                        Crafty.trigger("MapEditGrid_DeactivateTiles");
+                        this._menu = new MapEditSpriteSelect(this._tiles[0].getElement('block'));
+                        this._deactivate();
+                    }
                     break;
                 case Crafty.keys["ESC"]:
                     this._mode = "empty";
@@ -122,8 +157,10 @@ Crafty.c("MapEdit_Grid", {
                     break;
             }
         });
+    },
 
-        return this;
+    _deactivate : function() {
+        this.unbind("KeyDown");
     },
 
     grid : function(rows,cols) {
@@ -156,19 +193,16 @@ Crafty.c("MapEdit_Grid", {
             'rows' : this._r,
             'cols' : this._c,
             'tile_width' : this._tw,
-            'map' : ''
+            'map' : []
         }
 
         for(t in this._tiles) {
-            if(this._tiles[t].isSpriteActive("block")) {
-                obj.map = obj.map + "B";
-            } else if (this._tiles[t].isSpriteActive("player")) {
-                obj.map = obj.map + "P";
-            } else if (this._tiles[t].isSpriteActive("star")) {
-                obj.map = obj.map + "S";
-            } else {
-                obj.map = obj.map + "#";
-            }
+            map_obj = {
+                's' : this._tiles[t].getActiveSprite() || "empty",
+                'sp' : this._tiles[t].getActiveSpritePosition() || "center_center"
+            };
+            
+            obj.map.push(map_obj);
         }
 
         return asString ? JSON.stringify(obj) : obj;

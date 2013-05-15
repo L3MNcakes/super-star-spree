@@ -5,9 +5,12 @@ Crafty.scene("MapEdit", function() {
     var elements = [
         "src/components/MapEdit_Grid.js",
         "src/components/MapEdit_BaseTile.js",
+        "src/components/MapEdit_SpriteGrid.js",
+        "src/components/MapEdit_SpriteTile.js",
         "src/interfaces/MapEditMenu.js",
         "src/interfaces/MapEditSave.js",
-        "src/interfaces/MapEditLoad.js"
+        "src/interfaces/MapEditLoad.js",
+        "src/interfaces/MapEditSpriteSelect.js"
     ];
 
     require(elements, function() {
@@ -18,6 +21,6 @@ Crafty.scene("MapEdit", function() {
                 w : Crafty.viewport.width,
                 h : Crafty.viewport.height
             })
-            .grid(16,16);
+            .grid(32,32);
     });
 });

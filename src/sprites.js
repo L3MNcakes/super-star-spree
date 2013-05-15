@@ -13,22 +13,37 @@
 Sprites = Backbone.Model.extend({
     defaults: {
         images:{
-            'ufo' : {
-                 'file' : 'web/images/ufo.png',
-                 'tile' : 211,
-                 'tileh' : 117,
-                 'elements': {
-                     'ufo' : [0, 0]
-                 }
-            },
-            'mapedit' : {
-                'file' : 'web/images/mapedit_sprites.png',
-                'tile' : 64,
-                'tileh' : 64,
+            'blocks' : {
+                'file' : 'web/images/block_spritesheet.png',
+                'tile' : 32,
+                'tileh' : 32,
                 'elements' : {
-                    'mapedit_player' : [0,0],
-                    'mapedit_block' : [1,0],
-                    'mapedit_star' : [2, 0]
+                    'tile_block_TL' : [0,0],
+                    'tile_block_TC' : [1,0],
+                    'tile_block_TR' : [2,0],
+                    'tile_block_CL' : [0,1],
+                    'tile_block_CC' : [1,1],
+                    'tile_block_CR' : [2,1],
+                    'tile_block_BL' : [0,2],
+                    'tile_block_BC' : [1,2],
+                    'tile_block_BR' : [2,2]
+                }
+            },
+            'tiles' : {
+                'file' : 'web/images/tile_spritesheet.png',
+                'tile' : 32,
+                'tileh' : 32,
+                'elements' : {
+                    'tile_block' : [0,0],
+                    'tile_star' : [1, 0]
+                }
+            },
+            'actors' : {
+                'file' : 'web/images/player_spritesheet.png',
+                'tile' : 32,
+                'tileh' : 32,
+                'elements' : {
+                    'tile_player' : [0,2]
                 }
             }
         }

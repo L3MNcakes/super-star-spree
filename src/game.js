@@ -1,7 +1,10 @@
 window.onload = function() {
         
     var version = "0.0.1",
-    	today = new Date();
+    	today = new Date(),
+        globlaMouse = {};
+
+    window.onmousemove = handleMouseMove;
 	
 	// Fix for cache
     if(gameContainer.env == 'dev') {
@@ -13,6 +16,8 @@ window.onload = function() {
 	//start Crafty
 	Crafty.init(1024, 1024);
 	Crafty.canvas.init();
+
+    Crafty.storage.open("SuperStarSpree");
 	
 	require([
 	         "src/sprites.js?v="+version+"",
@@ -69,3 +74,12 @@ window.onload = function() {
 		Crafty.scene("loading");
 	});
 };
+
+function handleMouseMove(e) {
+    event = e || window.event;
+    
+    globalMouse = {
+        'x' : event.clientX,
+        'y' : event.clientY
+    };
+}
