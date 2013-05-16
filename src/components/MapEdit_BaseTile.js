@@ -91,6 +91,17 @@ Crafty.c("MapEdit_BaseTile", {
             this._deactivate();
         });
 
+        entity.bind("MapEditGrid_ActivateTiles", function() {
+            this._activate();
+        });
+
+        entity.bind("MapEditMenu_Clear", function() {
+            for(e in this._elements) {
+                this._popSprite(e, "active");
+                this._popSprite(e, "hover");
+            }
+        });
+
         for(elem in this._elements) {
             if(this._elements[elem].single) {
                 entity.bind("SinglePlop", function(e) {
@@ -188,8 +199,8 @@ Crafty.c("MapEdit_BaseTile", {
         return this._active_sprite_pos;
     },
 
-    setActive : function(elem) {
-        this._elem(elem);
+    setActive : function(elem,pos) {
+        this._elem(elem,pos);
         this._active_sprite = elem;
         this._pushSprite(elem,1,"active");
     },
@@ -204,7 +215,7 @@ Crafty.c("MapEdit_BaseTile", {
                         y : this.y,
                         w : this.w,
                         h : this.h,
-                        z : element.z,
+                        z : element.z || 0,
                         alpha: alpha
                     });
 

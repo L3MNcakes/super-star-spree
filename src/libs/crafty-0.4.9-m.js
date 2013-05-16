@@ -3949,8 +3949,8 @@ Crafty.storage = (function () {
                     stores.push('save');
                     stores.push('cache');
                 }
-                if (db == null) {
-                    var request = indexedDB.open(gameName,2);
+                if (db == null || true) {
+                    var request = indexedDB.open(gameName,3);
 
                     request.onupgradeneeded = function(e) {
                         db = this.result;
@@ -4038,7 +4038,8 @@ Crafty.storage = (function () {
                     store = trans.objectStore(type),
                     request = store.get(key);
                     request.onsuccess = function (e) {
-                        callback(unserialize(e.target.result.data));
+                        cb = e.target.result ? unserialize(e.target.result.data) : null;
+                        callback(cb);
                     };
                 }
                 catch (e) {

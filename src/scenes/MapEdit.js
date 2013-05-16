@@ -10,7 +10,8 @@ Crafty.scene("MapEdit", function() {
         "src/interfaces/MapEditMenu.js",
         "src/interfaces/MapEditSave.js",
         "src/interfaces/MapEditLoad.js",
-        "src/interfaces/MapEditSpriteSelect.js"
+        "src/interfaces/MapEditSpriteSelect.js",
+        "src/interfaces/MapEditSaveDelete.js"
     ];
 
     require(elements, function() {

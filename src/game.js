@@ -4,8 +4,6 @@ window.onload = function() {
     	today = new Date(),
         globlaMouse = {};
 
-    window.onmousemove = handleMouseMove;
-	
 	// Fix for cache
     if(gameContainer.env == 'dev') {
 		version = today.getDay()+"_"+ today.getHours() +"_"+today.getSeconds();
@@ -74,12 +72,3 @@ window.onload = function() {
 		Crafty.scene("loading");
 	});
 };
-
-function handleMouseMove(e) {
-    event = e || window.event;
-    
-    globalMouse = {
-        'x' : event.clientX,
-        'y' : event.clientY
-    };
-}

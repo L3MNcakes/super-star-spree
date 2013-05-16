@@ -4,11 +4,6 @@ Crafty.c("MapEdit_Grid", {
     _tw : gameContainer.conf.get("tile_width"),
     _mode : "block",
     _menu : null,
-    _maps : {
-        'first' : {
-            'file' : 'src/maps/first.js'
-        }
-    },
 
     init : function() {
         this.addComponent("2D, Canvas, Mouse, Keyboard");
@@ -26,8 +21,9 @@ Crafty.c("MapEdit_Grid", {
             Crafty.storage.load("Maps","save",function(data) {
                 maps = data || [];
 
+                ml = maps.length + 1;
                 save_obj = {
-                    'label' : 'map_' + maps.length + 1,
+                    'label' : 'map_' + ml,
                     'map' : map_obj
                 };
 
@@ -41,9 +37,7 @@ Crafty.c("MapEdit_Grid", {
         });
 
         this.bind("MapEditMenu_Load", function() {
-            if(this._menu) {
-                this._menu.remove();
-            }
+            if(this._menu) this._menu.remove();
             this._menu = null;
 
             var maps = null;
@@ -65,9 +59,10 @@ Crafty.c("MapEdit_Grid", {
             this._r = e.rows;
             this._c = e.cols;
 
-            Crafty("MapEdit_BaseTile").destroy();
-
-            this._tiles = [];
+            for(t in this._tiles) {
+                if(this._tiles[t]) this._tiles[t].destroy();
+            }
+            this._tiles = new Array();
 
             for(i=0;i<this._r;i++) {
                 for(j=0;j<this._c;j++){
@@ -91,6 +86,42 @@ Crafty.c("MapEdit_Grid", {
             Crafty.trigger("Grid_ModeChange", {'mode' : this._mode});
         });
 
+        this.bind("MapEditMenu_SaveDelete", function() {
+            if(this._menu) this._menu.remove();
+            this._menu = null;
+
+            var maps = null;
+            var entity= this;
+
+            Crafty.storage.open("SuperStarSpree");
+
+            Crafty.storage.load("Maps","save",function(data) {
+                maps = data;
+
+                entity._mapLoad = new MapEditSaveDelete();
+                entity._mapLoad.maps(maps);
+            });
+        });
+
+        this.bind("MapEditSaveDelete_Delete", function(e) {
+            this._mapLoad.remove();
+            
+            Crafty.storage.open("SuperStarSpree");
+
+            Crafty.storage.load("Maps","save",function(data) {
+                maps = data;
+                for(m in maps) {
+                    if(maps[m].label == e) {
+                        maps.splice(m,1);
+                    }
+                }
+
+                Crafty.storage.save("Maps","save",maps);
+
+                Crafty.trigger("MapEditMenu_SaveDelete");
+            });
+        });
+
         this.bind("MapEditMenu_Test", function() {
             gameContainer.map = this.map_to_json(false);
             Crafty.scene('Game');
@@ -100,6 +131,13 @@ Crafty.c("MapEdit_Grid", {
             this._menu.remove();
             this._menu = null;
             this._activate();
+        });
+
+        this.bind("MapEditGrid_Activate", function() {
+            if(this._menu) this._menu.remove();
+            this._menu = null;
+            this._activate();
+            Crafty.trigger("MapEditGrid_ActivateTiles");
         });
 
         this._activate();

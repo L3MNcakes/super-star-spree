@@ -15,6 +15,8 @@ MapEditSpriteSelect = BaseEntity.extend({
             })
             .tileset(ts);
 
+        model.set({'entity' : entity});
+
         return this;
     }
 });

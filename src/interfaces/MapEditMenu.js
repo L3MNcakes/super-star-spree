@@ -11,7 +11,7 @@ MapEditMenu = BaseEntity.extend({
         'border_radius' : '10px',
         'size' : 20,
         'family' : 'Arial',
-        'num_options' : 3
+        'num_options' : 6
     },
 
     initialize : function() {
@@ -22,7 +22,7 @@ MapEditMenu = BaseEntity.extend({
                 x : model.get('x'),
                 y : model.get('y'),
                 w : model.get('width'),
-                h : (model.get('num_options')+1) * model.get('size') + (model.get('size') * 2),
+                h : (model.get('num_options')) * model.get('size') + (model.get('size') * 2),
                 z : 0
             })
             .menu({
@@ -45,9 +45,19 @@ MapEditMenu = BaseEntity.extend({
                 'action' : 'MapEditMenu_Load'
             })
             .addOption({
+                'label' : 'Delete',
+                'type' : 'event',
+                'action' : 'MapEditMenu_SaveDelete'
+            })
+            .addOption({
                 'label' : 'Test',
                 'type' : 'event',
                 'action' : 'MapEditMenu_Test'
+            })
+            .addOption({
+                'label' : 'Clear',
+                'type' : 'event',
+                'action' : 'MapEditMenu_Clear'
             })
             .addOption({
                 'label' : 'Quit',

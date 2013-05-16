@@ -5,9 +5,8 @@ Crafty.c("BaseMenu", {
 
 
     init : function() {
-        this.addComponent("2D,DOM,Mouse");
+        this.addComponent("2D,DOM,Mouse,Keyboard");
         this._opts = [];
-
     },
 
     menu : function(settings) {
@@ -29,6 +28,12 @@ Crafty.c("BaseMenu", {
         this._text_size = settings.size;
         this._text_family = settings.family;
         this._selected_color = settings.select_color;
+
+        this.bind("KeyDown", function(e) {
+            if(e.key == Crafty.keys["ESC"]) {
+                this.destroy();
+            }
+        });
 
         this.bind("Change", function() {
             this._rect.attr({
@@ -115,6 +120,10 @@ Crafty.c("BaseMenu", {
         this.trigger("Change");
 
         return this;
+    },
+
+    select_color : function(col) {
+        this._selected_color = col;
     }
 
 });
