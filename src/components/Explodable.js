@@ -1,36 +1,37 @@
 Crafty.c("Explodable", {
-    _explode_size : 8,
+    _explode_size : 4,
 
     init : function() {
-        this.addComponent("Collision");
+        this.addComponent("Collision,BetterGravity");
 
-        this.onHit("Game_Bullet", function() {
+        this.onHit("Game_Bullet", function(e) {
             spr = this._tile.sprite[this._sprite_position];    
+
+            for(i in e) {
+                obj = e[i].obj;
+                if(obj) obj.destroy();
+            }
 
             for(i=0;i<this._explode_size;i++) {
                 for(j=0;j<this._explode_size;j++) {
-                    entity = Crafty.c("2D,Canvas,Gravity,Sprite,"+spr)
+                    Crafty.e("Explodable_Piece,"+spr)
                         .crop(
-                            j * this._explode_size,
-                            i * this._explode_size,
-                            this._explode_size,
-                            this._explode_size
+                            j * (32 / this._explode_size),
+                            i * (32 / this._explode_size),
+                            32 / this._explode_size,
+                            32 / this._explode_size
                         )
                         .attr({
-                            x : this.x + this._explode_size * j,
-                            y : this.y + this._explode_size * i,
-                            w : this._explode_size,
-                            h : this._explode_size
-                        })
-                        .gravity('platform');
-
-                    entity._falling = false;
-
-                    entity.bind("EnterFrame", function() {
-                    
-                    });
+                            x : this.x + (32 / this._explode_size) * j,
+                            y : this.y + (32 / this._explode_size) * i,
+                            w : 32 / this._explode_size,
+                            h : 32 / this._explode_size,
+                            z : 100
+                        });
                 }
             }
+
+            this.destroy();
         });
     }
 });

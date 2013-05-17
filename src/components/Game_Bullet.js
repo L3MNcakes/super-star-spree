@@ -12,17 +12,18 @@ Crafty.c("Game_Bullet", {
         this.color("#FF0000");
 
         this.bind("EnterFrame",function() {
-            dx = this._delta.x * this._speed;
-            dy = this._delta.y * this._speed;
+            dx = this.x + this._delta.x * this._speed;
+            dy = this.y + this._delta.y * this._speed;
 
-            if(dx > Crafty.viewport.width && dy > Crafty.viewport.height) {
+            if((dx > Crafty.viewport.width || dx < 0) && (dy > Crafty.viewport.height && dy < 0)) {
                 this.destroy();
             } else {
                 this.attr({
-                    x : this.x + dx,
-                    y : this.y + dy
+                    x : dx,
+                    y : dy
                 });
             }
+
         });
     },
 
