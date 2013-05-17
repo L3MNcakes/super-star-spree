@@ -7,7 +7,8 @@ Crafty.scene("Game", function() {
         "src/components/Game_BlockTile.js",
         "src/components/Game_StarTile.js",
         "src/components/Game_Actor.js",
-        "src/components/BetterGravity.js"
+        "src/components/BetterGravity.js",
+        "src/components/Game_Bullet"
     ];
 
     require(elements, function() {

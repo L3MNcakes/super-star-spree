@@ -1,10 +1,10 @@
 Crafty.c("Game_StarTile", {
     init : function() {
-        this.addComponent("Game_BaseTile,tile_star,Collision,Collectable");
-        this.z = 5;
+        this.addComponent("Game_BaseTile,Collision,Collectable");
+
+        this._tile = gameContainer.conf.get("tiles").star;
 
         this.onHit("Game_Actor", function(e) {
-            e.obj.
             this.destroy();
         });
     }

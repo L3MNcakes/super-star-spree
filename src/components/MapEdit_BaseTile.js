@@ -6,46 +6,7 @@ Crafty.c("MapEdit_BaseTile", {
 
     _offset : 0,
 
-    _elements : {
-        'block' : {
-            'sprite' : {
-                'top_left' : 'tile_block_TL',
-                'top_center' : 'tile_block_TC',
-                'top_right' : 'tile_block_TR',
-                'center_left' : 'tile_block_CL',
-                'center_center' : 'tile_block_CC',
-                'center_right' : 'tile_block_CR',
-                'center_left' : 'tile_block_CL',
-                'bottom_left' : 'tile_block_BL',
-                'bottom_center' : 'tile_block_BC',
-                'bottom_right' : 'tile_block_BR'
-            },
-            'z' : 3,
-            'offset' : 0,
-            'single' : false
-        },
-        'player' : {
-            'sprite' : {
-                'center_center' : 'tile_player'
-            },
-            'z' : 5,
-            'offset' : 0,
-            'single' : true
-        },
-        'star' : {
-            'sprite' : {
-                'center_center' : 'tile_star'
-            },
-            'z' : 4,
-            'offset' : 0,
-            'single' : false 
-        },
-        'empty' : {
-            'sprite' : {
-                'center_ceter' : ''
-            }
-        }
-    },
+    _elements : gameContainer.conf.get('tiles'),
 
     init : function() {
         this.addComponent("2D, Canvas, Mouse");
@@ -75,6 +36,7 @@ Crafty.c("MapEdit_BaseTile", {
         entity.bind("Grid_ModeChange", function(e) {
             if(e.mode in this._elements) {
                 this._elem(e.mode);
+                this._sprite_pos = Object.keys(this._elements[e.mode].sprite)[0];
             }
 
             for(elem in this._elements) {
@@ -134,6 +96,8 @@ Crafty.c("MapEdit_BaseTile", {
             if(e.mouseButton == Crafty.mouseButtons.LEFT) {
                 if(this.isSpriteActive(this._plop_element)) {
                     this._popSprite(this._plop_element,"active");
+                    this._active_sprite = null;
+                    this._active_sprite_pos = null;
                 } else {
                     this._pushSprite(this._plop_element,1,"active");
                     this._popSprite(this._plop_element,"hover");
@@ -202,6 +166,7 @@ Crafty.c("MapEdit_BaseTile", {
     setActive : function(elem,pos) {
         this._elem(elem,pos);
         this._active_sprite = elem;
+        this._active_sprite_pos = pos;
         this._pushSprite(elem,1,"active");
     },
 

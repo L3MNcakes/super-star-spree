@@ -39,11 +39,22 @@ Sprites = Backbone.Model.extend({
                 }
             },
             'actors' : {
-                'file' : 'web/images/player_spritesheet.png',
+                'file' : 'web/images/actor_spritesheet.png',
                 'tile' : 32,
                 'tileh' : 32,
                 'elements' : {
-                    'tile_player' : [0,2]
+                    'walk_F1' : [0,0],
+                    'walk_F2' : [1,0],
+                    'walk_F3' : [2,0],
+                    'walk_F4' : [3,0],
+                    'walk_F5' : [4,0],
+                    'walk_F6' : [5,0],
+                    'walk_F7' : [6,0],
+                    'walk_F8' : [7,0],
+                    'walk_F9' : [8,0],
+                    'walk_F10' : [9,0],
+                    'walk_F11' : [10,0],
+                    'walk_F12' : [11,0]
                 }
             }
         }
